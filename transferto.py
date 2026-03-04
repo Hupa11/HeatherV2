@@ -6268,7 +6268,7 @@ def main():
     application.add_handler(CommandHandler("mass_saintvinson", mass_saintvinson_givewp_command))
     application.add_handler(CommandHandler("staleks", staleks_florida_command))
     
-        application.add_handler(CommandHandler("corrigan", corrigan_command))  # /corrigan → Corrigan Funerals
+    application.add_handler(CommandHandler("corrigan", corrigan_command))  # /corrigan → Corrigan Funerals
     application.add_handler(CommandHandler("cf", corrigan_command))  # /cf → Corrigan short alias
     application.add_handler(CommandHandler("mass_staleks", mass_staleks_florida_command))
     application.add_handler(CommandHandler("ccfoundation", ccfoundation_command))
