@@ -147,7 +147,6 @@ async def format_and_cache_response(
     return formatted
 from tools.shopify_discovery import discover_store_products, scan_store, scan_pending_stores, scan_all_pending_stores
 from gates.shopify_auto import shopify_auto_check
-from gates.tsa_charge import tsa_check
 from gates.corrigan_charge import corrigan_check
 
 # Disable SSL warnings for proxy
@@ -3201,23 +3200,6 @@ async def charge5_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     await process_cards_with_gateway(update, raw_text, charge5_check, "Charge Gate 5", "stripe")
 
-
-async def tsa_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Handle /tsa command - Texas Southern Academy $0.50 - supports single or batch (up to 25)"""
-    raw_text = update.message.text
-    for prefix in ['/tsa ']:
-        if raw_text.lower().startswith(prefix):
-            raw_text = raw_text[len(prefix):].strip()
-            break
-    else:
-        if '\n' in raw_text:
-            raw_text = raw_text.split('\n', 1)[1].strip()
-        elif context.args:
-            raw_text = ' '.join(context.args)
-        else:
-            raw_text = ''
-    
-    await process_cards_with_gateway(update, raw_text, tsa_check, "TSA $0.50", "stripe")
 
 
 async def corrigan_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -6286,9 +6268,7 @@ def main():
     application.add_handler(CommandHandler("mass_saintvinson", mass_saintvinson_givewp_command))
     application.add_handler(CommandHandler("staleks", staleks_florida_command))
     
-    # TSA and Corrigan $0.50 charge gates
-    application.add_handler(CommandHandler("tsa", tsa_command))  # /tsa → Texas Southern Academy
-    application.add_handler(CommandHandler("corrigan", corrigan_command))  # /corrigan → Corrigan Funerals
+        application.add_handler(CommandHandler("corrigan", corrigan_command))  # /corrigan → Corrigan Funerals
     application.add_handler(CommandHandler("cf", corrigan_command))  # /cf → Corrigan short alias
     application.add_handler(CommandHandler("mass_staleks", mass_staleks_florida_command))
     application.add_handler(CommandHandler("ccfoundation", ccfoundation_command))
