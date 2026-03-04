@@ -147,7 +147,6 @@ async def format_and_cache_response(
     return formatted
 from tools.shopify_discovery import discover_store_products, scan_store, scan_pending_stores, scan_all_pending_stores
 from gates.shopify_auto import shopify_auto_check
-from gates.corrigan_charge import corrigan_check
 
 # Disable SSL warnings for proxy
 import urllib3
@@ -3202,23 +3201,6 @@ async def charge5_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 
-async def corrigan_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Handle /corrigan command - Corrigan Funerals $0.50 - supports single or batch (up to 25)"""
-    raw_text = update.message.text
-    for prefix in ['/corrigan ', '/cf ']:
-        if raw_text.lower().startswith(prefix):
-            raw_text = raw_text[len(prefix):].strip()
-            break
-    else:
-        if '\n' in raw_text:
-            raw_text = raw_text.split('\n', 1)[1].strip()
-        elif context.args:
-            raw_text = ' '.join(context.args)
-        else:
-            raw_text = ''
-    
-    await process_cards_with_gateway(update, raw_text, corrigan_check, "Corrigan $0.50", "stripe")
-
 
 async def paypal_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handle /paypal command - PayPal Auth - supports single or batch (up to 25)"""
@@ -6268,8 +6250,6 @@ def main():
     application.add_handler(CommandHandler("mass_saintvinson", mass_saintvinson_givewp_command))
     application.add_handler(CommandHandler("staleks", staleks_florida_command))
     
-    application.add_handler(CommandHandler("corrigan", corrigan_command))  # /corrigan → Corrigan Funerals
-    application.add_handler(CommandHandler("cf", corrigan_command))  # /cf → Corrigan short alias
     application.add_handler(CommandHandler("mass_staleks", mass_staleks_florida_command))
     application.add_handler(CommandHandler("ccfoundation", ccfoundation_command))
     application.add_handler(CommandHandler("mass_ccfoundation", mass_ccfoundation_command))
